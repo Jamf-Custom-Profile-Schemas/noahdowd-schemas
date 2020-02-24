@@ -1,0 +1,551 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "org.mozilla.firefox",
+    
+    "definitions": {
+        "bookmark": {
+            "type": "object",
+            "title": "Bookmark",
+            "properties": {
+                   "Folder": {"type": "string", "title": "Folder"},
+                   "URL": {"type": "string", "title": "URL"},
+                "Title": {"type": "string", "title": "Title"},
+                "Favicon": {"type": "string", "title": "Favicon"},
+                "Placement": {"type": "string", "title": "Placement"}
+            }
+        },
+        "extension": {
+            "type": "object",
+            "title": "Extension",
+            "properties": {
+                "installation_mode": {
+                    "type": "string",
+                    "title": "Installation Mode",
+                    "default": "blocked",
+                    "enum": ["allowed", "blocked", "force_installed", "normal_installed"]
+                },
+                "install_url": {
+                    "type": "string",
+                    "description": "The location of the extension to be installed.",
+                    "title": "Install URL"
+                },
+                "install_sources": {
+                    "type": "array",
+                    "title": "Install Sources",
+                    "items": {"type": "string", "title": "URL"}
+                },
+                "blocked_install_message": {
+                    "type": "string",
+                    "title": "Blocked Install Message",
+                    "description": "Error message to display to users if they're blocked from installing an extension."
+                }
+            }
+        }
+    },
+    
+    "type": "object",
+    "properties": {
+        "DisableSetDesktopBackground": {
+            "type": "boolean",
+            "title": "Disable Desktop Background",
+            "default": "true"
+        },
+        "Preferences": {
+            "type": "object",
+            "title": "Preferences",
+            "properties": {
+                "app.update.auto": {"type": "boolean", "title": "Enable Auto Update", "default": "true"},
+                "security.default_personal_cert": {"type": "string", "title": "Default Personal Certificate", "default": "Ask Every Time"}
+               }
+        },
+        "DisableProfileImport": {"type": "boolean", "title": "Disable Profile Importing", "default": "true"},
+        "DisableSecurityBypass": {
+            "type": "object",
+            "title": "Security Bypass Settings",
+            "properties": {
+               "InvalidCertificate": {"type": "boolean", "title": "Disable Invalid SSL Cert Bypass", "default": "true"},
+               "SafeBrowsing": {"type": "boolean", "title": "Allow Safe Browsing", "default": "true"}
+            }
+       },
+        "DNSOverHTTPS":{
+            "type": "object",
+            "title": "DNS Over HTTPS",
+            "properties": {
+               "Enabled": {"type": "boolean", "title": "Enabled", "default": "false"},
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true"},
+               "ProviderURL": { "type": "string", "title": "Provider URL", "default": "URL_TO_ALTERNATE_PROVIDER" }
+           }
+        },
+        "CaptivePortal": { "type": "boolean", "title": "Captive Portal", "default": "false" },
+        "DisableAppUpdate": { "type": "boolean", "title": "Disable App Update", "default": "true" },
+        "DefaultDownloadDirectory": { "type": "string", "title": "Default Download Directory", "default": "${home}\/Downloads" },
+        "DontCheckDefaultBrowser": { "type": "boolean", "title": "Don't Check Default Browser", "default": "true" },
+        "Certificates":{
+            "type": "object",
+            "title": "Certificates",
+            "properties": {
+               "Install": {
+                   "type": "array",
+                   "title": "Install",
+                   "items": {"type": "string"},
+                   "default": ["cert1.der","cert2.pem"]
+               },
+               "ImportEnterpriseRoots": { "type": "boolean", "title": "Import Enterprise Root CAs", "default": "true" }
+            }
+        },
+        "Homepage":{
+            "type": "object",
+            "title": "Homepage",
+            "properties": {
+               "URL": { "type": "string", "title": "URL", "default": "http:\/\/example.com" },
+               "Additional": {
+                   "type": "array",
+                   "title": "Additional Tabs",
+                       "items": {"type": "string", "title": "URL"},
+                       "default": ["https:\/\/www.example.com\/extra-home1.htm","https:\/\/www.example.com\/extra-home2.htm","https:\/\/www.example.com\/extra-home3.htm"]
+                   },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
+                   "StartPage": { "type": "string", "title": "Start Page", "default": "homepage", "enum": ["none", "homepage", "previous-session"]}
+               }
+        },
+        "DisableFormHistory": { "type": "boolean", "title": "Disable Form History", "description": "Turn off saving information on web forms and the search bar.", "default": "true" },
+        "SupportMenu":{
+            "type": "object",
+            "title": "Support Menu",
+            "description": "Add a menuitem to the help menu for specifying support information.",
+            "properties": {
+               "Title": { "type": "string", "title": "Window Title", "default": "Click here for help" },
+               "URL": { "type": "string", "title": "URL", "default": "http:\/\/example.edu\/" },
+               "AccessKey": { "type": "string", "title": "Keyboard Key to Access", "default": "C" }
+            }
+        },
+        "DisableSafeMode": { "type": "boolean", "title": "Disable Safe Mode", "default": "true" },
+        "ExtensionUpdate": { "type": "boolean", "title": "Allow Extension Updates", "default": "false" },
+        "DisableSystemAddonUpdate": { "type": "boolean", "title": "Disable System Add-On Updates", "default": "true" },
+        "DisableFirefoxScreenshots": { "type": "boolean", "title": "Disable Firefox Screenshots", "default": "true"},
+        "FlashPlugin":{
+            "type": "object",
+            "title": "Adobe Flash Plugin",
+            "properties": {
+                "Allow": {
+                    "type": "array",
+                    "title": "Allow",
+                    "items": {"type": "string", "title": "URL"},
+                    "default": ["https:\/\/www.example.com"]
+                },
+               "Block": {
+                       "type": "array",
+                       "title": "Block",
+                       "items": {"type": "string", "title": "URL"},
+                       "default": ["https:\/\/www.example.org"]
+                   },
+               "Default": { "type": "boolean", "title": "Default", "default": "true" },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" }
+            }
+        },
+        "DisableFirefoxAccounts": { "type": "boolean", "title": "Disable Firefox Accounts", "default": "true" },
+        "ExtensionSettings":{
+            "type": "array",
+            "title": "Extension Settings",
+            "items": [{
+                "type": "object",
+                "title": "Extension",
+                "properties": {
+                    "*": {
+                        "type": "object",
+                        "title": "All Extensions",
+                        "properties": {
+                            "blocked_install_message": {
+                                "type": "string",
+                                "title": "Blocked Install Message",
+                                "default": "Custom error message"
+                            },
+                            "install_sources": {
+                                "type": "array",
+                                "title": "Install Source URLs",
+                                "items": {"type": "string", "title": "URL"},
+                                "default": ["https:\/\/addons.mozilla.org\/"]
+                            },
+                            "installation_mode": {
+                                "type": "string",
+                                "title": "Installation Mode",
+                                "default": "blocked",
+                                "enum": ["allowed", "blocked", "force_installed", "normal_installed"]
+                            },
+                            "allowed_types": {
+                                "type": "array",
+                                "title": "Allowed Types",
+                                "items": {"type": "string", "enum": ["extension", "theme", "dictionary", "langpack"]}
+                            }
+                        }
+                    }
+                }
+            }],
+            "additionalItems": {"$ref": "#/definitions/extension"}
+        },
+        "DisplayBookmarksToolbar": { "type": "boolean", "title": "Display Bookmarks Toolbar", "default": "true" },
+        "HardwareAcceleration": { "type": "boolean", "title": "Enable Hardware Acceleration", "default": "false" },
+        "DisablePrivateBrowsing": { "type": "boolean", "title": "Disable Private Browsing", "default": "true" },
+        "EnterprisePoliciesEnabled": { "type": "boolean", "title": "Enable Enterprise Policies", "description": "Enable policy support on macOS.", "default": "false" },
+        
+        "Bookmarks": {
+            "type": "array",
+            "title": "Bookmarks",
+            "items": {"$ref": "#/definitions/bookmark"},
+            "default": [{"Folder":"Example1Folder","URL":"https:\/\/www.example.org","Title":"Example1","Favicon":"https:\/\/www.example.org\/favicon.ico","Placement":"toolbar"},{"Folder":"Example2Folder","URL":"https:\/\/www.example.com","Title":"Example2","Favicon":"https:\/\/www.example.com\/favicon.ico","Placement":"menu"}]
+        },
+        "NetworkPrediction": { "type": "boolean", "title": "Network Prediction", "description": "Enable or disable network prediction (DNS prefetching).", "default": "false" },
+        "EnableTrackingProtection":{
+            "type": "object",
+            "title": "Tracking Protection",
+            "properties": {
+               "Fingerprinting": { "type": "boolean", "title": "Fingerprinting", "default": "true" },
+               "Value": { "type": "boolean", "title": "Trackers", "default": "true" },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
+               "Cryptomining": { "type": "boolean", "title": "Cryptomining", "default": "true" }
+            }
+        },
+        "OverrideFirstRunPage": {"type": "string", "title": "First Run Page", "default": "https:\/\/www.example.com"},
+        "Extensions":{
+            "type": "object",
+            "title": "Extensions",
+            "properties": {
+               "Install": {
+                   "type": "array",
+                "title": "Install",
+                   "items": {"type": "string", "title": "URL"},
+                   "default": ["https:\/\/addons.mozilla.org\/firefox\/downloads\/file\/1053714\/ghostery_privacy_ad_blocker-8.2.4-an+fx.xpi"]
+               },
+               "Uninstall": {
+                   "type": "array",
+                   "title": "Uninstall",
+                   "items": {"type": "string", "title": "Extension ID"},
+                   "default": []
+                   },
+               "Locked":
+               {
+                   "type": "array",
+                   "title": "Locked",
+                   "items": {"type": "string", "title": "Extension ID"},
+                   "default": ["firefox@ghostery.com"]
+                   }
+            }
+        },
+        "Authentication":{
+            "type": "object",
+            "title": "Authentication",
+            "properties": {
+               "NTLM": {
+                "type": "array",
+                "title": "NTLM",
+                "items": {"type": "string", "title": "Domain"},
+                "default": ["mydomain.com","https:\/\/myotherdomain.com"]
+                },
+               "Delegated": {
+                "type": "array",
+                "title": "Delegated",
+                "items": {"type": "string", "title": "Domain"},
+                "default": ["mydomain.com","https:\/\/myotherdomain.com"]
+               },
+               "AllowNonFQDN":{
+                   "type": "object",
+                   "title": "Allow Non-FQDN",
+                   "properties": {
+                       "SPNEGO": { "type": "boolean", "title": "SPNEGO", "default": "true" },
+                    "NTLM": { "type": "boolean", "title": "NTLM", "default": "true" }
+                }
+               },
+               "AllowProxies":{
+                   "type": "object",
+                   "title": "Allow Proxies",
+                   "properties": {
+                      "SPNEGO": { "type": "boolean", "title": "SPNEGO", "default": "true" },
+                      "NTLM": { "type": "boolean", "title": "NTLM", "default": "true" }
+                    }
+               },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
+               "SPNEGO": {
+                   "type": "array",
+                   "title": "SPNEGO",
+                   "items": {"type": "string", "title": "Domain"},
+                   "default": ["mydomain.com","https:\/\/myotherdomain.com"]
+                   }
+           }
+        },
+        "Proxy":{
+            "type": "object",
+            "title": "Proxy",
+            "properties": {
+               "Mode": {"type": "string", "title": "Mode", "default": "manual", "enum": ["none", "system", "manual", "autoDetect", "autoConfig"]},
+               "Locked": { "type": "boolean", "default": "true" },
+               "HTTPProxy": {"type": "string", "title": "HTTP Proxy", "default": "https:\/\/httpproxy.example.com"},
+               "UseHTTPProxyForAllProtocols": {
+                       "type": "boolean",
+                       "title": "Use HTTP Proxy For All Protocols",
+                       "default": "false"
+                   },
+                   "SSLProxy": {
+                       "type": "string",
+                       "title": "SSL Proxy",
+                       "default": "https:\/\/sslproxy.example.com"
+                   },
+                   "FTPProxy": {
+                       "type": "string",
+                       "title": "FTP Proxy",
+                       "default": "https:\/\/ftpproxy.example.com"
+                   },
+                   "SOCKSProxy": {
+                       "type": "string",
+                       "title": "SOCKS Proxy",
+                       "default": "https:\/\/socksproxy.example.com"
+                   },
+                "SOCKSVersion": {"type": "string", "title": "Socks Version", "default": "4", "enum": ["4", "5"]},
+                "Passthrough": {
+                    "type": "array",
+                    "title": "Passthrough",
+                    "items": {"type": "string", "title": "URL or IP"},
+                    "default": ["<local>"]
+                },
+                "AutoConfigURL": {
+                    "type": "string",
+                    "title": "Auto Config URL",
+                    "description": "URL for proxy configuration (only used if Mode is autoConfig)."
+                },
+                "AutoLogin": {
+                    "type": "boolean",
+                    "title": "Auto Login",
+                    "description": "Do not prompt for authentication if password is saved.",
+                    "default": "false"
+                },
+                "UseProxyForDNS": {
+                    "type": "boolean",
+                    "title": "Use Proxy For DNS",
+                    "description": "Use proxy DNS when using SOCKS v5.",
+                    "default": "false"
+                }
+               }
+        },
+        "SecurityDevices":{
+            "type": "array",
+            "title": "Security Devices",
+            "description": "Install PKCS #11 modules.",
+            "items": {
+                "type": "object",
+                "properties": {
+                   "key": {"type": "string", "title": "Device Name"},
+                   "value": {
+                       "type": "string",
+                       "title": "Device",
+                       "default": "PATH_TO_LIBRARY_FOR_DEVICE"
+                    },
+                   "propertyNames": {"type": "string"}
+                }
+            }
+        },
+        "OverridePostUpdatePage": {"type": "string", "title": "Post-Update Page", "default": ""},
+        "BlockAboutSupport": { "type": "boolean", "title": "Block About Support", "description": "Block access to Troubleshooting Information (about:support).", "default": "true" },
+        "LocalFileLinks": {
+            "type": "array",
+            "title": "Local File Links",
+            "description": "Enable linking to local files by origin.",
+            "items": {"type": "string", "title": "URL"},
+            "default": ["http:\/\/example.org","http:\/\/example.edu"]
+        },
+        "Permissions":{
+            "type": "object",
+            "title": "Permissions",
+            "properties": {
+               "Camera":{
+                   "type": "object",
+                   "title": "Camera",
+                   "properties": {
+                      "Allow": {
+                          "type": "array",
+                          "title": "Allow",
+                          "items": {"type": "string", "title": "URL"},
+                          "default": ["https:\/\/example.org"]
+                          },
+                      "BlockNewRequests": { "type": "boolean", "title": "Block New Requests", "default": "true" },
+                      "Block": {
+                          "type": "array",
+                          "title": "Block",
+                          "items": {"type": "string", "title": "URL"},
+                          "default": ["https:\/\/example.edu"]
+                          },
+                      "Locked": { "type": "boolean", "title": "Locked", "default": "true" }
+                    }
+               },
+               "Microphone":{
+                   "type": "object",
+                   "title": "Microphone",
+                   "properties": {
+                      "Allow": {
+                          "type": "array",
+                          "title": "Allow",
+                          "items": {"type": "string", "title": "URL"},
+                          "default": ["https:\/\/example.org"]
+                          },
+                      "BlockNewRequests": { "type": "boolean", "title": "Block New Requests", "default": "true" },
+                      "Block": {
+                      "type": "array",
+                      "title": "Block",
+                      "items": {"type": "string", "title":"URL"},
+                      "default": ["https:\/\/example.edu"]
+                      },
+                      "Locked": { "type": "boolean", "title":"Locked", "default": "true" }
+                    }
+               },
+               "Location":{
+                   "type": "object",
+                   "title": "Location",
+                   "properties": {
+                      "Allow": {
+                          "type": "array",
+                          "title": "Allow",
+                          "items": {"type": "string", "title": "URL"},
+                          "default": ["https:\/\/example.org"]
+                          },
+                      "BlockNewRequests": { "type": "boolean", "title": "Block New Requests", "default": "true" },
+                      "Block": {
+                      "type": "array",
+                      "title": "Block",
+                      "items": {"type": "string", "title": "URL"},
+                      "default": ["https:\/\/example.edu"]
+                      },
+                      "Locked": { "type": "boolean", "title": "Locked", "default": "true" }
+                    }
+               },
+               "Notifications":{
+                   "type": "object",
+                   "title": "Notifications",
+                   "properties": {
+                      "Allow": {
+                          "type": "array",
+                          "title": "Allow",
+                          "items": {"type": "string", "title": "URL"},
+                          "default": ["https:\/\/example.org"]
+                          },
+                      "BlockNewRequests": { "type": "boolean", "title": "Block New Requests", "default": "true" },
+                      "Block": {
+                      "type": "array",
+                      "title": "Block",
+                      "items": {"type": "string", "title": "URL"},
+                      "default": ["https:\/\/example.edu"]
+                      },
+                      "Locked": { "type": "boolean", "title": "Locked", "default": "true" }
+                    }
+               }
+            }
+        } ,
+        "PasswordManagerEnabled": { "type": "boolean", "title": "Password Manager Enabled", "default": "false" },
+        "NoDefaultBookmarks": { "type": "boolean", "title": "No Default Bookmarks", "default": "true" },
+        "FirefoxHome":{
+            "type": "object",
+            "title": "Firefox Home",
+            "properties": {
+               "TopSites": { "type": "boolean", "title": "Top Sites", "default": "true" },
+               "Pocket": { "type": "boolean", "title": "Pocket", "default": "false" },
+               "Search": { "type": "boolean", "title": "Search", "default": "true" },
+               "Snippets": { "type": "boolean", "title": "Snippets", "default": "false" },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
+               "Highlights": { "type": "boolean", "title": "Highlights", "default": "true" }
+            }
+        },
+        "DisableFeedbackCommands": { "type": "boolean", "title": "Disable Feedback Commands", "description": "Disable the menus for reporting sites.", "default": "true" },
+        "DisablePasswordReveal": { "type": "boolean", "title": "Disable Password Reveal", "default": "true" },
+        "AppUpdateURL": {"type": "string", "title": "App Update URL", "default": "https:\/\/www.example.com\/update.xml"},
+        "DisableTelemetry": { "type": "boolean", "title": "Disable Telemetry", "default": "true" },
+        "DisableDeveloperTools": { "type": "boolean", "title": "Disable Developer Tools", "default": "true" },
+        "SearchBar": {"type": "string", "title": "Search Bar", "default": "separate", "enum": ["unified", "separate"]},
+        "WebsiteFilter":{
+            "type": "object",
+            "title": "Website Filter",
+            "properties": {
+               "Block": {
+                   "type": "array",
+                   "title": "Block",
+                   "items": {"type": "string", "title": "URL" },
+                   "default": ["<all_urls>"]
+               },
+               "Exceptions": {
+                    "type": "array",
+                    "title": "Exceptions",
+                    "items": {"type": "string", "title": "URL"},
+                    "default": ["https:\/\/www.google.com\/*","https:\/\/www.yahoo.com\/*"]
+                }
+            }
+        },
+        "DisableFirefoxStudies": { "type": "boolean", "title": "Disable Firefox Studies", "description": "Disable Firefox studies (Shield).", "default": "true" },
+        "DownloadDirectory": {"type": "string", "title": "Download Directory", "default": "${home}\/Downloads"},
+        "BlockAboutConfig": { "type": "boolean", "title": "Block About Config", "description": "Block access to about:config.", "default": "true" },
+        "DisableMasterPasswordCreation": { "type": "boolean", "title": "Disable Master Password Creation", "default": "true" },
+        "SanitizeOnShutdown": { "type": "boolean", "title": "Sanitize On Shutdown", "description": "Clear all data on shutdown.", "default": "true" },
+        "InstallAddonsPermission":{
+            "type": "object",
+            "title": "Install Addons Permissions",
+            "properties": {
+               "Allow": {
+                   "type": "array",
+                   "title": "Allow",
+                   "items": {"type": "string", "title": "URL"},
+                   "default": ["https:\/\/example.org","https:\/\/example.edu"]
+               },
+               "Default": { "type": "boolean", "title": "Set As Default", "default": "false" }
+            }
+        },
+        "DisablePocket": { "type": "boolean", "title": "Disable Pocket", "description": "Remove Pocket in the Firefox UI.", "default": "true" },
+        "DisableBuiltinPDFViewer": { "type": "boolean", "title": "Disable Built-in PDF Viewer", "default": "true" },
+        "DisableProfileRefresh": { "type": "boolean", "title": "Disable Profile Refresh", "description": "Disable the Refresh Firefox button on about:support and support.mozilla.org", "default": "true" },
+        "NewTabPage": { "type": "boolean", "title": "New Tab Page", "default": "false" },
+        "OfferToSaveLoginsDefault": { "type": "boolean", "title": "Offer To Save Logins - Default Value", "description": "Sets the default value of signon.rememberSignons without locking it.", "default": "false" },
+        "OfferToSaveLogins": { "type": "boolean", "title": "Offer To Save Logins", "default": "false" },
+        "SSLVersionMin": {"type": "string", "title": "SSL Version Minimum", "default": "tls1.3", "enum": ["tls1", "tls1.1", "tls1.2", "tls1.3"]},
+        "SSLVersionMax": {"type": "string", "title": "SSL Version Maximum", "default": "tls1.3", "enum": ["tls1", "tls1.1", "tls1.2", "tls1.3"]},
+        "BlockAboutAddons": { "type": "boolean", "title": "Block About Addons", "description": "Block access to the Add-ons Manager (about:addons).", "default": "true" },
+        "RequestedLocales": {
+            "type": "array",
+            "title": "Requested Locales",
+            "items": {"type": "string", "title": "Locale"},
+            "default": ["de","en-US"]
+        },
+        "BlockAboutProfiles": { "type": "boolean", "title": "Block About Profiles", "description": "Block access to About Profiles (about:profiles).", "default": "true" },
+        "Cookies":{
+            "type": "object",
+            "title": "Cookies",
+            "properties": {
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
+               "ExpireAtSessionEnd": { "type": "boolean", "title": "Expire At Session End", "default": "true" },
+               "Default": { "type": "boolean", "title": "Default", "default": "false" },
+               "Allow": {
+                   "type": "array",
+                   "title": "Allow",
+                   "items": {"type": "string", "title": "URL"},
+                   "default": ["https:\/\/www.example.org\/"]
+               },
+               "RejectTracker": { "type": "boolean", "title": "Reject Tracker", "default": "true" },
+               "Block": {
+                   "type": "array",
+                   "title": "Block",
+                   "items": {"type": "string", "title": "URL"},
+                   "default": ["https:\/\/www.example.edu\/"]
+               },
+               "AcceptThirdParty": {"type": "string", "title": "Accept Third Party", "default": "never", "enum": ["always", "never", "from-visited"]}
+            }
+        },
+        "DisableForgetButton": { "type": "boolean", "title": "Disable Forget Button", "default": "true" },
+        "PopupBlocking":{
+            "type": "object",
+            "title": "Popup Blocking",
+            "properties": {
+               "Allow": {
+                "type": "array",
+                "title": "Allow",
+                "items": {"type": "string", "title": "URL"},
+                "default": ["https:\/\/www.example.org","https:\/\/www.example.edu"]
+               },
+               "Default": { "type": "boolean", "title": "Default", "default": "true" },
+               "Locked": { "type": "boolean", "title": "Locked", "default": "true" }
+            }
+        }
+    }
+}
