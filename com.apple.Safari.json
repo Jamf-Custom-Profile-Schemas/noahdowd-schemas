@@ -71,7 +71,7 @@
 		"DefaultBrowserPromptingState2": {
 			"type": "number",
 			"title": "Suppress default web browser prompt",
-			"enum": [1]
+			"enum": [0, 1]
 		},
 		
 		"BookmarksMenuIncludesBookmarksToolbar": {
@@ -242,7 +242,7 @@
 		"DefaultDatabaseQuota": {
 			"type": "number",
 			"title": "Default space for database storage",
-			"description": "In bytes",
+			"description": "In bytes (default is 5MB)",
 			"enum": [0, 1048576, 5242880, 10485760, 52428800, 104857600, 524288000],
 			"default": 5242880
 		},
