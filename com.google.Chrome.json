@@ -1,15 +1,984 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	
+    "title": "Google Chrome Settings",
+    "description": "Domain: com.google.Chrome",
+    
 	"type": "object",
-	"properties": {
-		"AuthServerWhitelist": {"type": "string", "default": "*example.com,foobar.com,*baz"},
-		"AutoFillEnabled (deprecated)": {"type": "boolean", "default": "false"},
-		"AutofillAddressEnabled": {"type": "boolean", "default": "false"},
-		"AutofillCreditCardEnabled": {"type": "boolean", "default": "false"},
-		"DefaultBrowserSettingEnabled": {"type": "boolean", "default": "true"},
-		"DefaultDownloadDirectory": {"type": "string", "default": "~/Downloads"},
-		"HomepageLocation": {"type": "string", "default": "https://www.chromium.org"},
+	
+    "definitions": {
+        "extension_types": {
+            "title": "Extension Type",
+            "type": "string",
+            "enum": ["extension", "theme", "user_script", "hosted_app", "legacy_packaged_app", "platform_app"]
+        }
+    },
+    
+    "properties": {
+        "AutoSelectCertificateForUrls": {
+            "title": "Auto Select Certificate For URLs",
+            "items": {
+                "properties": {
+                    "filter": {
+                        "properties": {
+                            "ISSUER": {
+                                "id": "CertPrincipalFields",
+                                "properties": {
+                                    "CN": {
+                                        "type": "string"
+                                    },
+                                    "L": {
+                                        "type": "string"
+                                    },
+                                    "O": {
+                                        "type": "string"
+                                    },
+                                    "OU": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "SUBJECT": {
+                                "$ref": "CertPrincipalFields"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "pattern": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "DefaultCookiesSetting": {
+            "title": "Default cookies setting",
+            "description": "1 = Allow all sites to set local data, 2 = Do not allow any site to set local data, 4 = Keep cookies for the duration of the session. If unset 'AllowCookies' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1,2,4]
+        },
+        "CookiesAllowedForUrls": {
+            "title": "Allow cookies on these sites",
+            "description": "A list of URLs specifically allowed to set cookies",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "CookiesBlockedForUrls": {
+            "title": "Block cookies on these sites",
+            "description": "A list of URLs specifically blocked from setting cookies",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "CookiesSessionOnlyForUrls": {
+            "title": "Limit cookies from matching URLs to the current session",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultGeolocationSetting": {
+            "title": "Default geolocation setting",
+            "description": "1 = Allow sites to track the users' physical location, 2 = Do not allow any site to track the users' physical location, 3 = Ask whenever a site wants to track the users' physical location. If this policy is left not set, 'AskGeolocation' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1, 2, 3]
+        },
+        "DefaultImagesSetting": {
+            "title": "Default images setting",
+            "description": "1 = Allow all sites to show all images,2 = Do not allow any site to show images. If this policy is left not set, 'AllowImages' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1, 2]
+        },
+        "ImagesAllowedForUrls": {
+            "title": "Allow images on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "ImagesBlockedForUrls": {
+            "title": "Block images on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultJavaScriptSetting": {
+            "title": "Default JavaScript setting",
+            "description": "1 = Allow all sites to run JavaScript, 2 = Do not allow any site to run JavaScript. If this policy is left not set, 'AllowJavaScript' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1, 2]
+        },
+        "JavaScriptAllowedForUrls": {
+            "title": "Allow JavaScript on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "JavaScriptBlockedForUrls": {
+            "title": "Block JavaScript on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultNotificationSetting": {
+            "title": "Default notification setting",
+            "description": "1 = Allow sites to show desktop notifications, 2 = Do not allow any site to show desktop notifications, 3 = Ask every time a site wants to show desktop notifications. If this policy is left not set, 'AskNotifications' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1, 2, 3]
+        },
+        "NotificationsAllowedForUrls": {
+            "title": "Allow notifications on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "NotificationsBlockedForUrls": {
+            "title": "Block notifications on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultPluginsSetting": {
+            "title": "Default Flash setting",
+            "description": "1 = Allow all sites to automatically run the Flash plugin, 2 = Block the Flash plugin, 3 = Click to play. If this policy is left not set, the user will be able to change this setting manually.",
+            "type": "integer",
+            "enum": [1, 2, 3]
+        },
+        "PluginsAllowedForUrls": {
+            "title": "Allow the Flash plugin on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "PluginsBlockedForUrls": {
+            "title": "Block the Flash plugin on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultPopupsSetting": {
+            "title": "Default popups setting",
+            "description": "1 = Allow all sites to show pop-ups, 2 = Do not allow any site to show popups. If this policy is left not set, 'BlockPopups' will be used and the user will be able to change it.",
+            "type": "integer",
+            "enum": [1, 2]
+        },
+        "PopupsAllowedForUrls": {
+            "title": "Allow popups on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "PopupsBlockedForUrls": {
+            "title": "Block popups on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultWebBluetoothGuardSetting": {
+            "title": "Control use of the Web Bluetooth API",
+            "description": "2 = Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API, 3 = Allow sites to ask the user to grant access to a nearby Bluetooth device. If this policy is left not set, '3' will be used, and the user will be able to change it.",
+            "type": "integer",
+            "enum": [2, 3]
+        },
+        "DefaultWebUsbGuardSetting": {
+            "title": "Control use of the WebUSB API",
+            "description": "If this policy is left not set, '3' will be used, and the user will be able to change it. 2 = Do not allow any site to request access to USB devices via the WebUSB API, 3 = Allow sites to ask the user to grant access to a connected USB device",
+            "type": "integer",
+            "enum": [2, 3]
+        },
+        "WebUsbAllowedForUrls": {
+            "title": "Allow WebUSB on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "WebUsbBlockedForUrls": {
+            "title": "Block WebUSB on these sites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "WebUsbAllowDevicesForUrls": {
+            "title": "Devices to allow on these sites",
+            "items": {
+                "properties": {
+                    "devices": {
+                        "items": {
+                            "properties": {
+                                "product_id": {
+                                    "type": "integer"
+                                },
+                                "vendor_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "urls": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "devices",
+                    "urls"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "RegisteredProtocolHandlers": {
+            "title": "Register protocol handlers",
+            "items": {
+                "properties": {
+                    "default": {
+                        "description": "A boolean flag indicating if the protocol handler should be set as the default.",
+                        "type": "boolean"
+                    },
+                    "protocol": {
+                        "description": "The protocol for the protocol handler.",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the protocol handler.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "protocol",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        
+        "DefaultSearchProviderEnabled": {
+            "title": "Enable the default search provider",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Default​Search​Provider​Name": {
+            "title": "Default search provider name",
+            "type": "string"
+        },
+        "Default​Search​Provider​Search​U​R​L": {
+            "title": "Default search provider search URL",
+            "type": "string"
+        },
+        "Default​Search​Provider​Search​U​R​L​Post​Params": {
+            "title": "Parameters for search URL which uses POST",
+            "type": "string"
+        },
+        "Default​Search​Provider​Suggest​U​R​L": {
+            "title": "Default search provider suggest URL",
+            "type": "string"
+        },
+        "Default​Search​Provider​Suggest​U​R​L​Post​Params": {
+            "title": "Parameters for suggest URL which uses POST",
+            "type": "string"
+        },
+        "​Default​Search​Provider​New​Tab​U​R​L": {
+            "title": "Default search provider new tab page URL",
+            "type": "string"
+        },
+        "DefaultSearchProviderAlternateURLs": {
+            "title": "Alternate URLs for the default search provider",
+            "description": "The URLs should contain the string '{searchTerms}', which will be used to extract the search terms.",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "DefaultSearchProviderEncodings": {
+            "title": "Default search provider encodings",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "Character encoding"
+            }
+        },
+        "DefaultSearchProviderIconURL": {
+            "title": "Default search provider icon",
+            "type": "string"
+        },
+        "DefaultSearchProviderImageURL": {
+            "title": "Parameter providing search-by-image feature for the default search provider",
+            "type": "string"
+        },
+        "Default​Search​Provider​Image​U​R​L​Post​Params": {
+            "title": "Parameters for image URL which uses POST",
+            "type": "string"
+        },
+        "​Default​Search​Provider​Keyword": {
+            "title": "Default search provider keyword",
+            "type": "string"
+        },
+        
+        "ExtensionAllowedTypes": {
+            "id": "ExtensionAllowedTypes",
+            "title": "Allowed app/extension types",
+            "type": "array",
+            "items": {
+                "title": "Extension Type",
+                "type": "string",
+                "enum": ["extension", "theme", "user_script", "hosted_app", "legacy_packaged_app", "platform_app"]
+            }
+        },
+        "Extension​Install​Blacklist": {
+            "title": "Extension installation blacklist",
+            "description": "A blacklist value of '*' means all extensions are blacklisted unless they are explicitly listed in the whitelist.",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "Extension ID"
+            }
+        },
+        "Extension​Install​Whitelist": {
+            "title": "Extension installation whitelist",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "Extension ID"
+            }
+        },
+        "Extension​Install​Forcelist": {
+            "title": "Force-installed apps and extensions",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "Extension ID"
+            }
+        },
+        "Extension​Install​Sources": {
+            "id": "ExtensionInstallSources",
+            "title": "Extension, app, and user script install sources",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "ExtensionSettings": {
+            "title": "Extension management settings",
+            "patternProperties": {
+                "^[a-p]{32}(?:,[a-p]{32})*,?$": {
+                    "properties": {
+                        "allowed_permissions": {
+                            "$ref": "ListOfPermissions"
+                        },
+                        "blocked_install_message": {
+                            "description": "text that will be displayed to the user in the chrome webstore if installation is blocked.",
+                            "type": "string"
+                        },
+                        "blocked_permissions": {
+                            "id": "ListOfPermissions",
+                            "items": {
+                                "pattern": "^[a-z][a-zA-Z0-9.]*$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "installation_mode": {
+                            "enum": [
+                                "blocked",
+                                "allowed",
+                                "force_installed",
+                                "normal_installed",
+                                "removed"
+                            ],
+                            "type": "string"
+                        },
+                        "minimum_version_required": {
+                            "pattern": "^[0-9]+([.][0-9]+)*$",
+                            "type": "string"
+                        },
+                        "runtime_allowed_hosts": {
+                            "$ref": "ListOfUrlPatterns"
+                        },
+                        "runtime_blocked_hosts": {
+                            "id": "ListOfUrlPatterns",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "update_url": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "^update_url:": {
+                    "properties": {
+                        "allowed_permissions": {
+                            "$ref": "ListOfPermissions"
+                        },
+                        "blocked_permissions": {
+                            "$ref": "ListOfPermissions"
+                        },
+                        "installation_mode": {
+                            "enum": [
+                                "blocked",
+                                "allowed",
+                                "removed"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "properties": {
+                "*": {
+                    "properties": {
+                        "allowed_types": {
+                            "$ref": "ExtensionAllowedTypes"
+                        },
+                        "blocked_install_message": {
+                            "type": "string"
+                        },
+                        "blocked_permissions": {
+                            "$ref": "ListOfPermissions"
+                        },
+                        "install_sources": {
+                            "$ref": "ExtensionInstallSources"
+                        },
+                        "installation_mode": {
+                            "enum": [
+                                "blocked",
+                                "allowed",
+                                "removed"
+                            ],
+                            "type": "string"
+                        },
+                        "runtime_allowed_hosts": {
+                            "$ref": "ListOfUrlPatterns"
+                        },
+                        "runtime_blocked_hosts": {
+                            "$ref": "ListOfUrlPatterns"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+
+        "EnableMediaRouter": {
+            "title": "Enable Google Cast",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Show​Cast​Icon​In​Toolbar": {
+            "title": "Show the Google Cast toolbar icon",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Media​Router​Cast​Allow​All​I​Ps": {
+            "title": "Allow Google Cast to connect to Cast devices on all IP addresses",
+            "type": "boolean"
+        },
+        
+        "​Allow​Cross​Origin​Auth​Prompt": {
+            "title": "Cross-origin HTTP Basic Auth prompts",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Auth​Negotiate​Delegate​By​Kdc​Policy": {
+            "title": "Use KDC policy to delegate credentials",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Auth​Negotiate​Delegate​Whitelist": {
+            "title": "Kerberos delegation server whitelist",
+            "description": "Separate multiple server names with commas. Wildcards (*) are allowed.",
+            "type": "string"
+        },
+        "Auth​Schemes": {
+            "title": "Supported authentication schemes",
+            "description": "Possible values are 'basic', 'digest', 'ntlm' and 'negotiate'. Separate multiple values with commas.",
+            "type": "string"
+        },
+        "AuthServerWhitelist": {
+            "title": "Authentication server whitelist",
+            "description": "Separate multiple server names with commas. Wildcards (*) are allowed.",
+            "type": "string",
+        },
+        "Disable​Auth​Negotiate​Cname​Lookup": {
+            "title": "Disable CNAME lookup when negotiating Kerberos authentication",
+            "type": "boolean",
+            "default": "false"
+        },
+        "EnableAuthNegotiatePort": {
+            "title": "Include non-standard port in Kerberos SPN",
+            "type": "boolean",
+            "default": "false"
+        },
+        "NtlmV2Enabled": {
+            "title": "Enable NTLMv2 authentication",
+            "type": "boolean",
+            "default": "true"
+        },
+        
+        "BrowserSwitcherEnabled": {
+            "title": "Enable the Legacy Browser Support feature",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Alternative​Browser​Path": {
+            "title": "Alternative browser to launch for configured websites",
+            "description": "When this policy is set to one of ${firefox}, ${safari} or ${opera}, that browser will launch if it is installed.",
+            "type": "string"
+        },
+        "AlternativeBrowserParameters": {
+            "title": "Command-line parameters for the alternative browser",
+            "type": "string"
+        },
+        "Browser​Switcher​Delay": {
+            "title": "Delay before launching alternative browser (milliseconds)",
+            "type": "integer"
+        },
+        "Browser​Switcher​Keep​Last​Chrome​Tab": {
+            "title": "Keep last tab open in Chrome when switching browsers",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Browser​Switcher​Url​Greylist": {
+            "title": "Websites that should never trigger a browser switch",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "Browser​Switcher​Url​List": {
+            "title": "Websites to open in alternative browser",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "Browser​Switcher​External​Greylist​Url": {
+            "title": "URL of an XML file that contains URLs that should never trigger a browser switch",
+            "type": "string"
+        },
+        "Browser​Switcher​External​Sitelist​Url": {
+            "title": "URL of an XML file that contains URLs to load in an alternative browser",
+            "type": "string"
+        },
+        
+        "Abusive​Experience​Intervention​Enforce": {
+            "title": "Enforce Abusive Experience Intervention",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Ads​Setting​For​Intrusive​Ads​Sites": {
+            "title": "Ads setting for sites with intrusive ads",
+            "description": "1 = Allow ads on all sites, 2 = Do not allow ads on sites with intrusive ads",
+            "type": "integer",
+            "enum": [1, 2]
+        },
+        "Allow​Deleting​Browser​History": {
+            "title": "Enable deleting browser and download history",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Allow​Dinosaur​Easter​Egg": {
+            "title": "Allow Dinosaur Easter Egg Game",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Allow​File​Selection​Dialogs": {
+            "title": "Allow invocation of file selection dialogs",
+            "type": "boolean",
+            "default": "true"
+        },
+        "​Allow​Outdated​Plugins": {
+            "title": "Allow running plugins that are outdated",
+            "type": "boolean"
+        },
+        "Allow​Popups​During​Page​Unload": {
+            "title": "Allow a page to show popups during its unloading",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Allowed​Domains​For​Apps": {
+            "title": "Define domains allowed to access G Suite",
+            "type": "string"
+        },
+        "Alternate​Error​Pages​Enabled": {
+            "title": "Enable alternate error pages",
+            "type": "boolean"
+        },
+        "Always​Open​Pdf​Externally": {
+            "title": "Always Open PDF files externally",
+            "type": "boolean"
+        },
+        "Audio​Capture​Allowed": {
+            "title": "Allow audio capture",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Audio​Capture​Allowed​Urls": {
+            "title": "URLs that will be granted access to audio capture devices without prompt",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        
+        "AutoFillEnabled": {
+            "title": "AutoFill Enabled (deprecated)",
+            "type": "boolean",
+            "default": "true"
+        },
+		"AutofillAddressEnabled": {
+            "title": "Enable AutoFill for addresses",
+            "type": "boolean",
+            "default": "true"
+        },
+		"AutofillCreditCardEnabled": {
+            "title": "Enable AutoFill for credit cards",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Autoplay​Allowed": {
+            "title": "Allow media autoplay",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Autoplay​Whitelist": {
+            "title": "Allow media autoplay on a whitelist of URLs",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "Block​Third​Party​Cookies": {
+            "title": "Block​ third​ party​ cookies",
+            "type": "boolean",
+        },
+        "Bookmark​Bar​Enabled": {
+            "title": "Enable Bookmark Bar",
+            "description": "If you enable or disable this setting, users cannot change or override it in Google Chrome.",
+            "type": "boolean"
+        },
+        "Browser​Add​Person​Enabled": {
+            "title": "Enable add person in user manager",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Browser​Guest​Mode​Enabled": {
+            "title": "Enable guest mode in browser",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Browser​Guest​Mode​Enforced": {
+            "title": "Enforce browser guest mode",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Browser​Network​Time​Queries​Enabled": {
+            "title": "Allow queries to a Google time service",
+            "type": "boolean",
+            "default": "true"
+        },
+        "​Browser​Signin": {
+            "title": "Browser sign in settings",
+            "description": "If this policy is not set then the user can decide if they want to enable the browser sign in option and use it as they see fit. 0 = Disable browser sign-in, 1 = Enable browser sign-in, 2 = Force users to sign-in to use the browser",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "Built​In​Dns​Client​Enabled": {
+            "title": "Use built-in DNS client",
+            "type": "boolean"
+        },
+        "Certificate​Transparency​Enforcement​Disabled​For​Cas": {
+            "title": "Disable Certificate Transparency enforcement for a list of subjectPublicKeyInfo hashes",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "CA Hash"
+            }
+        },
+        "Certificate​Transparency​Enforcement​Disabled​For​LegacyCas": {
+            "title": "Disable Certificate Transparency enforcement for a list of Legacy Certificate Authorities",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "CA Hash"
+            }
+        },
+        "Certificate​Transparency​Enforcement​Disabled​For​Urls": {
+            "title": "Disable Certificate Transparency enforcement for a list of URLs",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        "Cloud​Management​Enrollment​Mandatory": {
+            "title": "Enable mandatory cloud management enrollment",
+            "type": "boolean"
+        },
+        "Cloud​Management​Enrollment​Token": {
+            "title": "Enrollment token of cloud policy",
+            "type": "string"
+        },
+        "Cloud​Policy​Overrides​Platform​Policy": {
+            "title": "Google Chrome cloud policy overrides Platform policy",
+            "type": "boolean"
+        },
+        "Command​Line​Flag​Security​Warnings​Enabled": {
+            "title": "Enable security warnings for command-line flags",
+            "type": "boolean"
+        },
+        "Component​Updates​Enabled": {
+            "title": "Enable component updates in Google Chrome",
+            "type": "boolean",
+            "default": "true"
+        },
+        "DefaultBrowserSettingEnabled": {
+            "title": "Set Google Chrome as Default Browser",
+            "type": "boolean",
+            "default": "true"
+        },
+		"DefaultDownloadDirectory": {
+            "title": "Set default download directory",
+            "type": "string",
+            "default": "~/Downloads"
+        },
+        "Download​Directory": {
+            "title": "Set download directory (enforced)",
+            "type": "string"
+        },
+        "Download​Restrictions": {
+            "title": "Download restrictions",
+            "description": "0 = No special restrictions, 1 = Block dangerous downloads, 2 = Block potentially dangerous downloads, 3 = Block all downloads, 4 = Block malicious downloads",
+            "type": "integer",
+            "enum": [0, 1, 2, 3, 4]
+        },
+        "Developer​Tools​Availability": {
+            "title": "Control where Developer Tools can be used",
+            "description": "0 = Disallow usage of the Developer Tools on extensions installed by enterprise policy, allow usage of the Developer Tools in other contexts, 1 = Allow usage of the Developer Tools, 2 = Disallow usage of the Developer Tools",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "Disable3​D​A​P​Is": {
+            "title": "Disable support for 3D graphics APIs",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Disable​Safe​Browsing​Proceed​Anyway": {
+            "title": "Disable proceeding from the Safe Browsing warning page",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Disable​Screenshots": {
+            "title": "Disable taking screenshots",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Disk​Cache​Dir": {
+            "title": "Set disk cache directory",
+            "type": "string"
+        },
+        "Disk​Cache​Size": {
+            "title": "Set disk cache size in bytes",
+            "description": "If the value of this policy is 0, the default cache size will be used but the user will not be able to change it.",
+            "type": "integer",
+            "minimum": 0
+        },
+        "​Edit​Bookmarks​Enabled": {
+            "title": "Enable bookmark editing",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Enable​Deprecated​Web​Platform​Features": {
+            "title": "Enable deprecated web platform features for a limited time",
+            "description": "The general format of the string tag will be [DeprecatedFeatureName]_EffectiveUntil[yyyymmdd]. As reference, you can find the intent behind the Web Platform feature changes at https://bit.ly/blinkintents.",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "Deprecated Feature"
+            }
+        },
+        "Enable​Online​Revocation​Checks": {
+            "title": "Enable online OCSP/CRL checks",
+            "type": "boolean",
+            "default": "false"
+        },
+        "​Enterprise​Hardware​Platform​A​P​I​Enabled": {
+            "title": "Enable managed extensions to use the Enterprise Hardware Platform API",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Force​Ephemeral​Profiles": {
+            "title": "Ephemeral profile",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Force​Google​Safe​Search": {
+            "title": "Force Google SafeSearch",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Force​You​Tube​Restrict": {
+            "title": "Force minimum YouTube Restricted Mode",
+            "description": "If this setting is set to Off or no value is set, Restricted Mode on YouTube is not enforced by Google Chrome. External policies such as YouTube policies might still enforce Restricted Mode, though. 0 = Do not enforce Restricted Mode on YouTube, 1 = Enforce at least Moderate Restricted Mode on YouTube, 2 = Enforce Strict Restricted Mode for YouTube",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "Hardware​Acceleration​Mode​Enabled": {
+            "title": "Use hardware acceleration when available",
+            "type": "boolean",
+            "default": "true"
+        },
+        "Hide​Web​Store​Icon": {
+            "title": "Hide the web store from the New Tab Page and app launcher",
+            "type": "boolean",
+            "default": "false"
+        },
+        "Import​Autofill​Form​Data": {
+            "title": "Import autofill form data from default browser on first run",
+            "type": "boolean"
+        },
+        "​Import​Bookmarks": {
+            "title": "Import bookmarks from default browser on first run",
+            "type": "boolean"
+        },
+        "​Import​History": {
+            "title": "Import browsing history from default browser on first run",
+            "type": "boolean"
+        },
+        "​Import​Homepage": {
+            "title": "Import homepage from default browser on first run",
+            "type": "boolean"
+        },
+        "​Import​SavedPasswords": {
+            "title": "Import saved passwords from default browser on first run",
+            "type": "boolean"
+        },
+        "​ImportSearchEngine": {
+            "title": "Import search engines from default browser on first run",
+            "type": "boolean"
+        },
+        "Incognito​Mode​Availability": {
+            "title": "Incognito mode availability",
+            "description": "0 = Incognito mode available, 1 = Incognito mode disabled, 2 = Incognito mode forced",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "Isolate​Origins": {
+            "title": "Enable Site Isolation for specified origins",
+            "description": "If the policy is enabled, each of the named origins in a comma-separated list will run in its own process.",
+            "type": "string"
+        },
+        "Managed​Bookmarks": {
+            "title": "Managed Bookmarks",
+            "items": {
+                "title": "Bookmark",
+                "id": "BookmarkType",
+                "properties": {
+                    "children": {
+                        "items": {
+                            "title": "Bookmark",
+                            "$ref": "BookmarkType"
+                        },
+                        "type": "array"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "toplevel_name": {
+                        "title": "Top-Level Name",
+                        "type": "string"
+                    },
+                    "url": {
+                        "title": "URL",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "Max​Invalidation​Fetch​Delay": {
+            "title": "Maximum fetch delay after a policy invalidation",
+            "description": "Specifies the maximum delay in milliseconds between receiving a policy invalidation and fetching the new policy from the device management service.",
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 300000,
+            "default": 5000
+        },
+        "Metrics​Reporting​Enabled": {
+            "title": "Enable reporting of usage and crash-related data",
+            "type": "boolean"
+        },
+        "​Network​Prediction​Options": {
+            "title": "Enable network prediction",
+            "description": "If this policy is left not set, network prediction will be enabled but the user will be able to change it. 0 = Predict network actions on any network connection, 1 = Predict network actions on any network that is not cellular. (Deprecated in 50, removed in 52. After 52, if value 1 is set, it will be treated as 0 - predict network actions on any network connection.), 2 = Do not predict network actions on any network connection",
+            "type": "integer",
+            "enum": [0, 1, 2]
+        },
+        "Override​Security​Restrictions​On​Insecure​Origin": {
+            "title": "Origins or hostname patterns for which restrictions on insecure origins should not apply",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "title": "URL"
+            }
+        },
+        
+        "Max​Connections​Per​Proxy": {
+            "title": "Maximal number of concurrent connections to the proxy server",
+            "description": "Specifies the maximal number of simultaneous connections to the proxy server.",
+            "type": "integer",
+            "minimum": 6,
+            "maximum": 100,
+            "default": 32
+        },
+        "HomepageLocation": {"type": "string", "default": "https://www.chromium.org"},
 		"PasswordManagerEnabled": {"type": "boolean", "default": "false"},
 		"ProxyMode": {"type": "string", "default": "direct"},
 		"SearchSuggestEnabled": {"type": "boolean", "default": "true"},
