@@ -1,0 +1,260 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+
+	"type": "object",
+	"properties": {
+		"HomePage": {
+			"type": "string",
+			"title": "Homepage",
+			"description": "Homepage URL",
+			"default": ""
+		},
+		"NewWindowBehavior": {
+			"type": "number",
+			"title": "Contents of new windows",
+			"description": "1 = Homepage, 2 = Empty Page, 3 = Same Page As Current Window, 4 = Bookmarks",
+			"default": 0,
+			"enum": [0, 1, 2, 3, 4]
+		},
+		"NewTabBehavior": {
+			"type": "number",
+			"title": "Contents of new tabs",
+			"description": "1 = Homepage, 2 = Empty Page, 3 = Same Page As Current Window, 4 = Bookmarks",
+			"default": 0,
+			"enum": [0, 1, 2, 3, 4]
+		},
+		"TabCreationPolicy": {
+			"type": "number",
+			"title": "Open pages in tabs instead of windows",
+			"description": "0 = Never, 1 = Automatically, 2 = Always",
+			"enum": [0, 1, 2]
+		},
+		"CommandClickMakesTabs": {
+			"type": "boolean",
+			"title": "Command-click opens a link in a new tab",
+			"default": "true"
+		},
+		"OpenNewTabsInFront": {
+			"type": "boolean",
+			"title": "When a new tab or window opens, make it active",
+			"default": "false"
+		},
+		"HistoryAgeInDaysLimit": {
+			"type": "number",
+			"title": "Remove history items",
+			"description": "Number of days to retain history",
+			"enum": [1, 7, 14, 30, 365, 365000]
+		},
+		"DownloadsPath": {
+			"type": "string",
+			"title": "Downloads location",
+			"description": "File system path (can start with ~) where downloaded files will be saved.",
+			"default": "~/Downloads"
+		},
+		"DownloadsClearingPolicy": {
+			"type": "number",
+			"title": "Remove download list items",
+			"description": "0 = Manually, 1 = When Safari quits, 2 = Upon successful download",
+			"enum": [0, 1, 2]
+		},
+		"AutoOpenSafeDownloads": {
+			"type": "boolean",
+			"title": "Open \"safe\" files after downloading",
+			"description": "\"Safe\" files include movies, pictures, sounds, PDF and text documents, and archives.",
+			"default": "true"
+		},
+		"ConfirmClosingMultiplePages": {
+			"type": "boolean",
+			"title": "Confirm closing multiple pages",
+			"default": "true"
+		},
+		"DefaultBrowserPromptingState2": {
+			"type": "number",
+			"title": "Suppress default web browser prompt",
+			"enum": [1]
+		},
+		
+		"BookmarksMenuIncludesBookmarksToolbar": {
+			"type": "boolean",
+			"title": "Bookmarks Menu includes Bookmarks Bar",
+			"default": "false"
+		},
+		"BookmarksMenuIncludesAddressBook": {
+			"type": "boolean",
+			"title": "Bookmarks Menu includes Contacts",
+			"default": "false"
+		},
+		"BookmarksMenuIncludesRendezvous": {
+			"type": "boolean",
+			"title": "Bookmarks Menu includes Bonjour",
+			"default": "false"
+		},
+		"BookmarksCollectionsIncludeAddressBook": {
+			"type": "boolean",
+			"title": "Bookmark Collections include Contacts",
+			"default": "true"
+		},
+		"BookmarksCollectionsIncludeRendezvous": {
+			"type": "boolean",
+			"title": "Bookmark Collections include Bonjour",
+			"default": "true"
+		},
+		
+		"AutoFillFromAddressBook": {
+			"type": "boolean",
+			"title": "AutoFill web forms using information from contacts",
+			"default": "true"
+		},
+		"AutoFillPasswords": {
+			"type": "boolean",
+			"title": "AutoFill user names and passwords",
+			"default": "false"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2ApplePayEnabled": {
+			"type": "boolean",
+			"title": "AutoFill credit card and Apple Pay data",
+			"default": "true"
+		},
+		"AutoFillMiscellaneousForms": {
+			"type": "boolean",
+			"title": "AutoFill other forms",
+			"default": "true"
+		},
+		
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled": {
+			"type": "boolean",
+			"title": "Enable Plug-ins",
+			"default": "true"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled": {
+			"type": "boolean",
+			"title": "Enable Java",
+			"default": "true"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptEnabled": {
+			"type": "boolean",
+			"title": "Enable JavaScript",
+			"default": "true"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically": {
+			"type": "boolean",
+			"title": "Allow JavaScript to open windows automatically",
+			"default": "false"
+		},
+		"AskBeforeSubmittingInsecureForms": {
+			"type": "boolean",
+			"title": "Ask before submitting insecure forms",
+			"default": "true"
+		},
+		
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2PrivateBrowsingEnabled": {
+			"type": "boolean",
+			"title": "Private browsing",
+			"default": "false"
+		},
+		"BlockStoragePolicy": {
+			"type": "number",
+			"title": "Block cookies and website data",
+			"description": "0 = Always, 1 = Never, 2 = Third parties except sites you visit, 3 = All third parties",
+			"enum": [0, 1, 2, 3]
+		},
+		"SendDoNotTrackHTTPHeader": {
+			"type": "boolean",
+			"title": "Website tracking",
+			"description": "Prevent cross-site tracking",
+			"default": "true"
+		},
+		
+		"ExtensionsEnabled": {
+			"type": "boolean",
+			"title": "Enable Extensions",
+			"default": "true"
+		},
+		"DidDisableIndividualExtensionsAfterRemovingOnOffSwitchIfNecessary": {
+			"type": "boolean",
+			"title": "Disable Extensions immediately",
+			"default": "false"
+		},
+		"LocalFileRestrictionsEnabled": {
+			"type": "boolean",
+			"title": "Enable local file restrictions",
+			"default": "true"
+		},		
+		
+		"CanPromptForPushNotifications": {
+			"type": "boolean",
+			"title": "Allow Notifications",
+			"default": "true"
+		},
+		
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2LoadsImagesAutomatically": {
+			"type": "boolean",
+			"title": "Display images",
+			"default": "true"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks": {
+			"type": "boolean",
+			"title": "Press Tab to highlight each item on a webpage",
+			"default": "false"
+		},
+		"IncludeDevelopMenu": {
+			"type": "boolean",
+			"title": "Show Develop menu in menu bar",
+			"default": "false"
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DefaultTextEncodingName": {
+			"type": "string",
+			"title": "Default text encoding",
+			"description": "The name of the text encoding to use for webpages that don't specify a text encoding. See http://www.iana.org/assignments/character-sets",
+			"examples": ["US-ASCII", "macintosh", "Adobe-Standard-Encoding"]
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2MinimumFontSize": {
+			"type": "number",
+			"title": "Never use fonts smaller than:",
+			"minimum": 1,
+			"default": 9
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2StandardFontFamily": {
+			"type": "string",
+			"title": "Default font",
+			"description": "Font family to use when a webpage does not specify a font.",
+			"examples": ["Helvetica", "Verdana", "Times"]
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DefaultFontSize": {
+			"type": "number",
+			"title": "Default font size",
+			"description": "Font size to use when a webpage does not specify a font size.",
+			"minimum": 1,
+			"default": 9
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2FixedFontFamily": {
+			"type": "string",
+			"title": "Default fixed-width font family",
+			"description": "Font family to use when a webpage specifies fixed-width font."
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DefaultFixedFontSize": {
+			"type": "number",
+			"title": "Default fixed-width font size",
+			"description": "Font size to use when a webpage specifies fixed-width font.",
+			"minimum": 1,
+			"default": 9
+		},
+		"DefaultDatabaseQuota": {
+			"type": "number",
+			"title": "Default space for database storage",
+			"description": "In bytes",
+			"enum": [0, 1048576, 5242880, 10485760, 52428800, 104857600, 524288000],
+			"default": 5242880
+		},
+		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2ShouldPrintBackgrounds": {
+			"type": "boolean",
+			"title": "Print backgrounds",
+			"default": "false"
+		},
+		"PrintHeadersAndFooters": {
+			"type": "boolean",
+			"title": "Print headers and footers",
+			"default": "true"
+		}
+	}
+}

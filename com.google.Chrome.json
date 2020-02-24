@@ -1,0 +1,19 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	
+	"type": "object",
+	"properties": {
+		"AuthServerWhitelist": {"type": "string", "default": "*example.com,foobar.com,*baz"},
+		"AutoFillEnabled (deprecated)": {"type": "boolean", "default": "false"},
+		"AutofillAddressEnabled": {"type": "boolean", "default": "false"},
+		"AutofillCreditCardEnabled": {"type": "boolean", "default": "false"},
+		"DefaultBrowserSettingEnabled": {"type": "boolean", "default": "true"},
+		"DefaultDownloadDirectory": {"type": "string", "default": "~/Downloads"},
+		"HomepageLocation": {"type": "string", "default": "https://www.chromium.org"},
+		"PasswordManagerEnabled": {"type": "boolean", "default": "false"},
+		"ProxyMode": {"type": "string", "default": "direct"},
+		"SearchSuggestEnabled": {"type": "boolean", "default": "true"},
+		"SyncDisabled": {"type": "boolean", "default": "true"},
+		"UpdateDefault": {"type": "number", "default": 2, "minimum": 0, "maximum": 3}
+	}
+}

@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"title": "com.apple.Enterprise-Connect",
+	
+	"definitions": {
+		"share": {
+			"type": "object",
+			"title": "Share",
+			"properties": {
+		   		"path": {"type": "string", "title": "Path"}
+			}
+		}
+	},
+		
+	"type": "object",
+	"properties": {
+		"adRealm": {"type": "string", "title": "AD Realm", "default": ""},
+		"alwaysGetNewTicket": {"type": "boolean", "title": "Always Get New Ticket", "description": "Always get a new Kerberos ticket, even if the current ticket isn’t expired.", "default": "false"},
+		"checkForNetworkType": {"type": "boolean", "title": "Check For Network Type", "description": "Tells Enterprise Connect how to check for your organization’s network. Set to “false” for default behavior, and set to “true” to check for a specific host.", "default": "false"},
+		"checkForNetworkServer": {"type": "string", "title": "Check for Network Server", "description": "The host Enterprise Connect should check for when connecting.", "default": ""},
+		"checkShowLegacyCertificates": {"type": "boolean", "title": "Show Legacy Certificates", "default": "false"},
+		"connectDelay": {"type": "integer", "title": "Connection Delay", "description": "Tells Enterprise Connect to delay starting its connection process when your organization’s network is detected. This may be useful for customers who use Cisco NAC and need to delay connection while host checks are performed. Set connectDelay to the value in seconds that you need to delay connections for.", "default": 0, "minimum": 0},
+		"connectionCompletedScriptPath": {"type": "string", "title": "Connection Completed Script Path", "default": ""},
+		"connectReminderNagInterval": {"type": "integer", "title": "Connection Reminders Nag Interval", "default": 86400, "minimum": 0},
+		"connectReminderTime": {"type": "integer", "title": "Connection Reminder Time", "minimum": 0},
+		"dailyReconnectTime": {"type": "integer", "title": "Daily Reconnect Time", "default": 86400, "minimum": 0},
+		"debugMode": {"type": "boolean", "title": "Debug Mode", "default": "false"},
+		"destroyKerbTicketUponCardRemoval": {"type": "boolean", "title": "Destroy Kerberos Ticket Upon Card Removal", "default": "true"},
+		"disablePasswordExpirationChecking": {"type": "boolean", "title": "Disable Password Expiration Checking"},
+		"disablePasswordFunctions": {"type": "boolean", "title": "Disable Password Functions", "default": "false"},
+		"managedshares": {
+			"type": "array",
+			"title": "Managed Shares",
+			"items": {"$ref": "#/definitions/share"},
+			"default": []
+		},
+		"mountNetworkHomeDirectory": {"type": "boolean", "title": "Mount Network Home Directory", "default": "false"},
+		"orgLogoPath": {"type": "string", "title": "Org. Logo Path"},
+		"orgUsernameLabel": {"type": "string", "title": "Org. Username Label"},
+		"passwordChangeScriptPath": {"type": "string", "title": "Password Change Script Path"},
+		"passwordChangeURL": {"type": "string", "title": "Password Change URL"},
+		"passwordExpireOverride": {"type": "integer", "title": "Password Expiration Override", "minimum": 0},
+		"passwordNotificationDays": {"type": "integer", "title": "Password Expiration Notification Days", "default": 15, "minimum": 0},
+		"preferredDC": {"type": "string", "title": "Preferred DC Server"},
+		"prepopulatedUsername": {"type": "string", "title": "Pre-populated Username", "default": ""},
+		"pwReqComplexity": {"type": "boolean", "title": "Required Password Complexity", "default": "false"},
+		"pwReqComplexityDisableUnicode": {"type": "boolean", "title": "Password Complexity Unicode", "description": "Disable checking for Unicode characters in password complexity", "default": "false"},
+		"pwReqHistoryCount": {"type": "integer", "title": "Password History Count", "description": "Tells Enterprise Connect how many previous passwords cannot be re-used.", "minimum": 0},
+		"pwReqLength": {"type": "integer", "title": "Minimum Password Length", "minimum": 0},
+		"pwReqMinimumPasswordAge": {"type": "integer", "title": "Minimum Password Age", "minimum": 0},
+		"pwReqText": {"type": "string", "title": "Password Change Text File", "description": "Tells Enterprise Connect to display the specified RTF file for the user during password changes. Supply the path to the RTF file you want to display.", "default": ""},
+		"runAuditScript": {"type": "boolean", "title": "Run Audit Script"},
+		"runAuditScriptPath": {"type": "string", "title": "Audit Script Path"},
+		"runPasswordChangeScriptOnLocalPasswordSync": {"type": "boolean", "title": "Run Password Change Script On Local Sync", "default": "true"},
+		"runPeriodicStateCheck": {"type": "boolean", "title": "Periodic State Check", "default": "true"},
+		"setupReminderNagInterval": {"type": "integer", "title": "Setup Reminder Nag Interval", "default": 86400, "minimum": 0},
+		"shareMountWaitSeconds": {"type": "integer", "title": "Share Mount Wait Time (seconds)", "default": 0, "minimum": 0},
+		"showKeychainIdentities": {"type": "boolean", "title": "Show Keychain Identities", "description": "Identities in the user’s default keychain will be available to choose in the certificate chooser window.", "default": "false"},
+		"showMenuExtra": {"type": "boolean", "title": "Show Menu Extra", "default": "true"},
+		"showUsernameWithSmartcard": {"type": "boolean", "title": "Show Username Field in Smart Card Mode", "default": "false"},
+		"smartCardMode": {"type": "boolean", "title": "Smart Card Mode", "default": "false"},
+		"syncLocalPassword": {"type": "boolean", "title": "Sync Local Password"}
+	}
+}

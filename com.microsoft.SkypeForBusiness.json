@@ -1,0 +1,66 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+
+	"type": "object",
+	"properties": {
+		"userName": {
+			"type": "string",
+			"title": "Username",
+			"description": "UPN (username) to use."
+		},
+		"sipAddress": {
+			"type": "string",
+			"title": "SIP Address",
+			"description": "SIP address (email) to use."
+		},
+		"userNameInAdvancedOnly": {
+			"type": "boolean",
+			"title": "Username field in Advanced pane",
+			"default": "false"
+		},
+		"autoAcceptTimeout": {
+			"type": "integer",
+			"title": "Auto-accept timeout",
+			"description": "Auto-accept timeout for users without server-side conversation history.",
+			"minimum": 0,
+			"default": 0
+		},
+		"warnWhenUnknownLocationForE911": {
+			"type": "boolean",
+			"title": "Warn when emergency service location can not be determined",
+			"default": "false"
+		},
+		
+		"autoDetectAutoDicoveryURLs": {
+			"type": "boolean",
+			"title": "Auto detect server URLs",
+			"default": "false"
+		},
+		"internalAutoDiscoveryURL": {
+			"type": "string",
+			"title": "Internal Auto Discovery URL"
+		},
+		"externalAutoDiscoveryURL": {
+			"type": "string",
+			"title": "External Auto Discovery URL"
+		},
+		"httpProxyDomain": {
+			"type": "string",
+			"title": "HTTP Proxy Domain"
+		},
+		"httpProxyUserName": {
+			"type": "string",
+			"title": "HTTP Proxy Username"
+		},
+		"httpProxyPassword": {
+			"type": "string",
+			"title": "HTTP Proxy Password"
+		},
+		"trustedDomainList": {
+			"type": "array",
+			"title": "Trusted Domain List",
+			"description": "List of trusted domains for HTTP redirects.",
+			"items": {"type": "string"}
+		}
+	}
+}
