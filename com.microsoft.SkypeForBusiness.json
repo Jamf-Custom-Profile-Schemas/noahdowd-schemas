@@ -60,7 +60,7 @@
 			"type": "array",
 			"title": "Trusted Domain List",
 			"description": "List of trusted domains for HTTP redirects.",
-			"items": {"type": "string"}
+            "items": {"type": "string", "title": "Domain"}
 		}
 	}
 }
