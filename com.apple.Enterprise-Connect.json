@@ -1,6 +1,7 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"title": "com.apple.Enterprise-Connect",
+    "title": "Enterprise Connect Settings",
+    "description": "Domain: com.apple.Enterprise-Connect",
 	
 	"definitions": {
 		"share": {
