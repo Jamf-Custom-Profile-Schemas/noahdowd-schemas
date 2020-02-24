@@ -22,7 +22,8 @@
                     "type": "string",
                     "title": "Installation Mode",
                     "default": "blocked",
-                    "enum": ["allowed", "blocked", "force_installed", "normal_installed"]
+                    "enum": ["allowed", "blocked", "force_installed", "normal_installed"],
+                    "enum-titles": ["Allowed", "Blocked", "Force Install", "Normal Install"]
                 },
                 "install_url": {
                     "type": "string",
@@ -105,7 +106,13 @@
                        "default": ["https:\/\/www.example.com\/extra-home1.htm","https:\/\/www.example.com\/extra-home2.htm","https:\/\/www.example.com\/extra-home3.htm"]
                    },
                "Locked": { "type": "boolean", "title": "Locked", "default": "true" },
-                   "StartPage": { "type": "string", "title": "Start Page", "default": "homepage", "enum": ["none", "homepage", "previous-session"]}
+                   "StartPage": {
+                       "type": "string",
+                       "title": "Start Page",
+                       "default": "homepage",
+                       "enum": ["none", "homepage", "previous-session"]
+                       "enum-titles": ["None", "Homepage", "Previous Session"]
+                   }
                }
         },
         "DisableFormHistory": { "type": "boolean", "title": "Disable Form History", "description": "Turn off saving information on web forms and the search bar.", "default": "true" },
@@ -170,12 +177,13 @@
                                 "type": "string",
                                 "title": "Installation Mode",
                                 "default": "blocked",
-                                "enum": ["allowed", "blocked", "force_installed", "normal_installed"]
+                                "enum": ["allowed", "blocked", "force_installed", "normal_installed"],
+                                "enum-titles": ["Allowed", "Blocked", "Force Install", "Normal Install"]
                             },
                             "allowed_types": {
                                 "type": "array",
                                 "title": "Allowed Types",
-                                "items": {"type": "string", "enum": ["extension", "theme", "dictionary", "langpack"]}
+                                "items": {"type": "string", "enum": ["extension", "theme", "dictionary", "langpack"], "enum-titles": ["Extension", "Theme", "Dictionary", "Language Pack"]}
                             }
                         }
                     }
@@ -276,7 +284,7 @@
             "type": "object",
             "title": "Proxy",
             "properties": {
-               "Mode": {"type": "string", "title": "Mode", "default": "manual", "enum": ["none", "system", "manual", "autoDetect", "autoConfig"]},
+                "Mode": {"type": "string", "title": "Mode", "default": "manual", "enum": ["none", "system", "manual", "autoDetect", "autoConfig"], "enum-titles": ["None", "Use System Settings", "Manual", "Auto Detect", "Auto Config"]},
                "Locked": { "type": "boolean", "default": "true" },
                "HTTPProxy": {"type": "string", "title": "HTTP Proxy", "default": "https:\/\/httpproxy.example.com"},
                "UseHTTPProxyForAllProtocols": {
@@ -456,7 +464,7 @@
         "AppUpdateURL": {"type": "string", "title": "App Update URL", "default": "https:\/\/www.example.com\/update.xml"},
         "DisableTelemetry": { "type": "boolean", "title": "Disable Telemetry", "default": "true" },
         "DisableDeveloperTools": { "type": "boolean", "title": "Disable Developer Tools", "default": "true" },
-        "SearchBar": {"type": "string", "title": "Search Bar", "default": "separate", "enum": ["unified", "separate"]},
+        "SearchBar": {"type": "string", "title": "Search Bar", "default": "separate", "enum": ["unified", "separate"], "enum-titles": ["Unified", "Separate"]},
         "WebsiteFilter":{
             "type": "object",
             "title": "Website Filter",
@@ -529,7 +537,7 @@
                    "items": {"type": "string", "title": "URL"},
                    "default": ["https:\/\/www.example.edu\/"]
                },
-               "AcceptThirdParty": {"type": "string", "title": "Accept Third Party", "default": "never", "enum": ["always", "never", "from-visited"]}
+               "AcceptThirdParty": {"type": "string", "title": "Accept Third Party", "default": "never", "enum": ["always", "never", "from-visited"], "enum-titles": ["Always", "Never", "From Visited Sites"]}
             }
         },
         "DisableForgetButton": { "type": "boolean", "title": "Disable Forget Button", "default": "true" },

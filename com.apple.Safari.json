@@ -10,24 +10,24 @@
 			"default": ""
 		},
 		"NewWindowBehavior": {
-			"type": "number",
+			"type": "integer",
 			"title": "Contents of new windows",
-			"description": "1 = Homepage, 2 = Empty Page, 3 = Same Page As Current Window, 4 = Bookmarks",
 			"default": 0,
-			"enum": [0, 1, 2, 3, 4]
+			"enum": [0, 1, 2, 3, 4],
+            "enum-titles": ["Top Sites", "Homepage", "Empty Page", "Same Page", "Favorites"]
 		},
 		"NewTabBehavior": {
 			"type": "number",
 			"title": "Contents of new tabs",
-			"description": "1 = Homepage, 2 = Empty Page, 3 = Same Page As Current Window, 4 = Bookmarks",
 			"default": 0,
-			"enum": [0, 1, 2, 3, 4]
+			"enum": [0, 1, 2, 3, 4],
+            "enum-titles": ["Top Sites", "Homepage", "Empty Page", "Same Page", "Favorites"]
 		},
 		"TabCreationPolicy": {
 			"type": "number",
 			"title": "Open pages in tabs instead of windows",
-			"description": "0 = Never, 1 = Automatically, 2 = Always",
-			"enum": [0, 1, 2]
+			"enum": [0, 1, 2],
+            "enum-titles": ["Never", "Automatically", "Always"]
 		},
 		"CommandClickMakesTabs": {
 			"type": "boolean",
@@ -42,8 +42,8 @@
 		"HistoryAgeInDaysLimit": {
 			"type": "number",
 			"title": "Remove history items",
-			"description": "Number of days to retain history",
-			"enum": [1, 7, 14, 30, 365, 365000]
+			"enum": [1, 7, 14, 30, 365, 365000],
+            "enum-titles": ["After one day", "After one week", "After two weeks", "After one month", "After one year", "Never"]
 		},
 		"DownloadsPath": {
 			"type": "string",
@@ -54,8 +54,8 @@
 		"DownloadsClearingPolicy": {
 			"type": "number",
 			"title": "Remove download list items",
-			"description": "0 = Manually, 1 = When Safari quits, 2 = Upon successful download",
-			"enum": [0, 1, 2]
+			"enum": [0, 1, 2],
+            "enum-titles": ["Manually", "When Safari quits", "Upon successful download"]
 		},
 		"AutoOpenSafeDownloads": {
 			"type": "boolean",
@@ -71,7 +71,8 @@
 		"DefaultBrowserPromptingState2": {
 			"type": "number",
 			"title": "Suppress default web browser prompt",
-			"enum": [0, 1]
+			"enum": [0, 1],
+            "enum-titles": ["false", "true"]
 		},
 		
 		"BookmarksMenuIncludesBookmarksToolbar": {
@@ -155,8 +156,8 @@
 		"BlockStoragePolicy": {
 			"type": "number",
 			"title": "Block cookies and website data",
-			"description": "0 = Always, 1 = Never, 2 = Third parties except sites you visit, 3 = All third parties",
-			"enum": [0, 1, 2, 3]
+			"enum": [0, 1, 2, 3],
+            "enum-titles": ["Always", "Never", "Third parties except sites you visit", "All third parties"]
 		},
 		"SendDoNotTrackHTTPHeader": {
 			"type": "boolean",
@@ -244,6 +245,7 @@
 			"title": "Default space for database storage",
 			"description": "In bytes (default is 5MB)",
 			"enum": [0, 1048576, 5242880, 10485760, 52428800, 104857600, 524288000],
+            "enum-titles": ["0 MB", "1 MB", "5 MB", "10 MB", "50 MB", "100 MB", "500 MB"]
 			"default": 5242880
 		},
 		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2ShouldPrintBackgrounds": {
