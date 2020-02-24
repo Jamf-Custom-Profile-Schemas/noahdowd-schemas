@@ -110,7 +110,7 @@
                        "type": "string",
                        "title": "Start Page",
                        "default": "homepage",
-                       "enum": ["none", "homepage", "previous-session"]
+                       "enum": ["none", "homepage", "previous-session"],
                        "enum-titles": ["None", "Homepage", "Previous Session"]
                    }
                }

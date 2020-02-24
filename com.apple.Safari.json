@@ -245,7 +245,7 @@
 			"title": "Default space for database storage",
 			"description": "In bytes (default is 5MB)",
 			"enum": [0, 1048576, 5242880, 10485760, 52428800, 104857600, 524288000],
-            "enum-titles": ["0 MB", "1 MB", "5 MB", "10 MB", "50 MB", "100 MB", "500 MB"]
+            "enum-titles": ["0 MB", "1 MB", "5 MB", "10 MB", "50 MB", "100 MB", "500 MB"],
 			"default": 5242880
 		},
 		"com.apple.Safari.ContentPageGroupIdentifier.WebKit2ShouldPrintBackgrounds": {
