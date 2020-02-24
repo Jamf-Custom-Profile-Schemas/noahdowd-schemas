@@ -1,6 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "org.mozilla.firefox",
+    "title": "Mozilla Firefox Settings",
+    "description": "Domain: org.mozilla.firefox",
     
     "definitions": {
         "bookmark": {
@@ -88,7 +89,7 @@
                "Install": {
                    "type": "array",
                    "title": "Install",
-                   "items": {"type": "string"},
+                   "items": {"type": "string", "title": "Certificate"},
                    "default": ["cert1.der","cert2.pem"]
                },
                "ImportEnterpriseRoots": { "type": "boolean", "title": "Import Enterprise Root CAs", "default": "true" }
